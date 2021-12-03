@@ -35,7 +35,7 @@ namespace Metsastaja_harkka
     }
     class Deer : Animal//, IAudio
     {
-        private string name;
+        //private string name;
         private double luck;
         private double speed;
         public Deer(string name)
@@ -59,7 +59,7 @@ namespace Metsastaja_harkka
     }
     class Rabbit : Animal
     {
-        private string name;
+        //private string name;
         private double luck;
         private double speed;
         public Rabbit(string name, int x, int y)
@@ -83,7 +83,7 @@ namespace Metsastaja_harkka
     }
     class Grandma
     {
-        private string name;
+        //private string name;
         private double luck;
         private double speed;
         public void Cry()
@@ -102,13 +102,14 @@ namespace Metsastaja_harkka
     }
     class Program
     {
+          static void Main(string[] args)
         //Yksinkertaistettu main
-        static void Main(string[] args)
+        
         {
             Console.Write("\n\nTervetuloa pelaamaan metsästäjä peliä!");
-
-            Menu();
-
+            Hunter metsastaja = new Hunter();
+            string player = metsastaja.name;
+            Menu(player);
             do
             {
                 GameLoop();
@@ -117,9 +118,52 @@ namespace Metsastaja_harkka
             
             Console.WriteLine("Kiitos kun pelasit Metsästäjä peliä! \nOhjelma loppuu...");
         }
-        //Pelin päälooppi missä itse peli tapahtuu
+        
+ static void Menu(string player)
+        // menu
+        {
+            Console.WriteLine("\nPÄÄVALIKKO \nTTK21SP2: Sari Tolonen ja Marja Tuhkanen");
+            string[] menu = new string []{"Pelihahmo",
+                                        "Saaliseläin",
+                                        "Matkan pituus",
+                                        "Aloita peli",
+                                        "Lopeta peli"};
+            for (int i = 1; i <= (menu.Length); i++)
+            {
+                Console.Write($"\t{i}. {menu[i-1]}\n");
+            }
+            Console.Write("Valintasi: ");
+            string input = Console.ReadLine();
+
+            switch(input)
+            {
+                case "1":
+                    // se
+                    Console.WriteLine($"pelaaja {player} valmiina!");
+                    break;
+                case "2":
+                    Console.WriteLine("pray selected");
+                    //Prey();
+                    break;
+                case "3":
+                    Console.WriteLine("distance selected");
+                    //Distance();
+                    break;
+                case "4":
+                    Console.WriteLine("play selected");
+                    GameLoop();
+                    break;
+                case "5":
+                    Console.WriteLine("exit selected");
+                    return;
+                default:
+                    Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
+                    break;
+            }
+        }
 
         static void GameLoop()
+        //Pelin päälooppi missä itse peli tapahtuu
         {
             Random rand = new Random();
             Deer deer0 = new Deer("Petteri");
@@ -156,55 +200,10 @@ namespace Metsastaja_harkka
                 Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
             }
         }
-        //Tästä rakentuu valikko
 
-        static void Menu()
-        {
-            Console.WriteLine("\nPÄÄVALIKKO \nTTK21SP2: Sari Tolonen ja Marja Tuhkanen");
-            string[] menu = new string []{"Pelihahmo",
-                                        "Saaliseläin",
-                                        "Matkan pituus",
-                                        "Aloita peli",
-                                        "Lopeta peli"};
-            for (int i = 1; i < (menu.Length); i++)
-            {
-                Console.Write($"\t{i}. {menu[i]}\n");
-            }
-            Console.WriteLine("Valintasi: ");
-            string input = Console.ReadLine();
 
-            switch(input)
-            {
-                case "1":
-                    Console.WriteLine();
-                    break;
-                case "2":
-                    Console.WriteLine();
-                    break;
-                case "3":
-                    Console.WriteLine();
-                    break;
-                case "4":
-                    Console.WriteLine();
-                    break;
-                case "5":
-                    Console.WriteLine();
-                    break;
-                default:
-                    Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
-                    break;
-            }
-
-            }
-        }
-        static void Player()
-        {
-            Console.WriteLine("Mikä on nimesi?");
-            string input = Console.ReadLine();
-            Console.Write($"Hei {input}! Valitsetko metsästysretkelle haulikon vai jousipyssyn?");
-        }
-        //Tässä kysymys haluaako pelata uudestaan
         static bool Again()
+        //Tässä kysymys haluaako pelata uudestaan
         {
             Console.WriteLine("Haluatko pelata uudestaan? (K)yllä vai (E)i?");
             string userInput = Console.ReadLine().Trim().ToLower();
@@ -220,19 +219,34 @@ namespace Metsastaja_harkka
         }
     }
     public class Hunter
-    {
-        private string name;
-        private string weapon;
-        private double accuracy;
-        private double speed;
+        {
 
-        public void Shoot()
-        {
-            Console.WriteLine("Bang!");
+            public string name = "Tefaultti Tane";
+            public string weapon = "haulikko";
+            public double accuracy = 50;
+            public double speed = 50;
+            public string prey = "jänis";
+            
+
+            public void NewHunter()
+            {
+                Console.WriteLine("Mikä on nimesi?");
+                name = Console.ReadLine();
+                //TODO Console.Write($"Hei {input}! Valitsetko metsästysretkelle haulikon vai jousipyssyn?");
+            }
+
+            public void Shoot()
+            {
+                Console.WriteLine("Bang!");
+            }
+            public void Listen()
+            {
+                //soittaa äänen uudestaan
+            }
         }
-        public void Listen()
-        {
-            //soittaa äänen uudestaan
-        }
-    }
+
 }
+
+
+
+
