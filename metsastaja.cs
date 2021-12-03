@@ -102,13 +102,18 @@ namespace Metsastaja_harkka
     }
     class Program
     {
-          static void Main(string[] args)
+        static void Main(string[] args)
         //Yksinkertaistettu main
-        
         {
+        
             Console.WriteLine("\nTervetuloa pelaamaan metsästäjä peliä!\n");
+            DrawMenu();
             Hunter metsastaja = new Hunter();
             string player = metsastaja.name;
+            //metsastaja.NewHunter();
+            //metsastaja.Weapon();
+            //Console.WriteLine($"Metsästäjä {metsastaja.name} valmis {metsastaja.weapon}metsälle!\n");
+
             if (Menu(player))
             {
                 do
@@ -121,18 +126,15 @@ namespace Metsastaja_harkka
             Console.WriteLine("Kiitos kun pelasit Metsästäjä peliä!");
             Console.WriteLine("Sari Tolonen ja Marja Tuhkanen @TTK21SP2");
         }
-        
-static void MakeLine(int length)
-{
-    for (int i = 0; i < length; i++)
-    {
-        Console.Write('-');
-    }
+        static void MakeLine(int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                Console.Write('-');
+            }
+        }
 
-}
-
-    static bool Menu(string player)
-        // menu
+        static string DrawMenu()
         {
             MakeLine(7);
             Console.Write("=( PÄÄVALIKKO )=");
@@ -150,13 +152,19 @@ static void MakeLine(int length)
             }
             Console.Write("\n    Valintasi: ");
             string input = Console.ReadLine();
+            return input;
+        }
 
+        static bool Menu(string player)
+        // menu        
+        {
+            string input = DrawMenu();
+                
             switch(input)
             {
                 case "1":
-                    // se
-                    Console.WriteLine($"pelaaja {player} valmiina!");
-                    return true;
+                    Player();
+                    return false;
                 case "2":
                     Console.WriteLine("prey selected");
                     //Prey();
@@ -171,12 +179,19 @@ static void MakeLine(int length)
                 case "5":
                     Console.WriteLine("exit selected");
                     return false;
-                default:
+                    default:
                     Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
                     return false;
             }
         }
-
+        static void Player()
+        {
+            //Hunter metsastaja = new Hunter();
+            //string player = metsastaja.name;
+            NewHunter();
+            Weapon();
+            Console.WriteLine($"Metsästäjä {metsastaja.name} valmis {metsastaja.weapon}metsälle!\n");
+        }
         static void GameLoop()
         //Pelin päälooppi missä itse peli tapahtuu
         {
@@ -191,7 +206,7 @@ static void MakeLine(int length)
             //To-Do: peura pitää oman äänensä...?
             Console.WriteLine("(L)änsi, (P)ohjoinen, (I)tä tai (A)las");
             string userInput = Console.ReadLine().ToLower();
-        
+            
             if (userInput.Trim().StartsWith("a"))
             {
                 Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
@@ -206,17 +221,15 @@ static void MakeLine(int length)
             }
             else if (userInput.Trim().StartsWith("l"))
             {
-               Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
-               Grandma grandma = new Grandma();
-               grandma.Cry();
+                Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
+                Grandma grandma = new Grandma();
+                grandma.Cry();
             }
             else
             {
                 Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
             }
         }
-
-
         static bool Again()
         //Tässä kysymys haluaako pelata uudestaan
         {
@@ -234,34 +247,53 @@ static void MakeLine(int length)
         }
     }
     public class Hunter
-        {
-
-            public string name = "Tefaultti Tane";
-            public string weapon = "haulikko";
-            public double accuracy = 50;
-            public double speed = 50;
-            public string prey = "jänis";
+    {
+        public string name;
+        //public double weapon;
+        public string weapon;
+        public int weaponSrength;
+        public double accuracy = 50;
+        public double speed = 50;
             
 
-            public void NewHunter()
-            {
-                Console.WriteLine("Mikä on nimesi?");
-                name = Console.ReadLine();
-                //TODO Console.Write($"Hei {input}! Valitsetko metsästysretkelle haulikon vai jousipyssyn?");
-            }
+        public string NewHunter()
+        {
+            Console.WriteLine("Mikä on nimesi?");
+            name = Console.ReadLine().Trim();
+            return name;
+        }
+        public void Weapon()
+        {
+            Console.Write($"Hei {name}! Valitsetko metsästysretkelle (H)aulikon vai (J)ousipyssyn?");
+            string input = Console.ReadLine().Trim().ToLower();
 
-            public void Shoot()
+            switch(input)
             {
-                Console.WriteLine("Bang!");
-            }
-            public void Listen()
-            {
-                //soittaa äänen uudestaan
+                case "h":
+                    Console.WriteLine($"Haulikko valittu.");
+                    weapon = "haulikko";                    
+                    weaponSrength = 50;
+                    break;
+                case "j":
+                    Console.WriteLine("Jousipyssy valittu.");                    
+                    weapon = "jousipyssy";                    
+                    weaponSrength = 25;
+                    break;
+                default:
+                    Console.WriteLine("Valintaa ei tunnistettu. Nyrkki valittu.");
+                    weapon = "nyrkki";
+                    weaponSrength = 10;
+                    break;
+            
             }
         }
-
+        public void Ammu()
+        {
+            Console.WriteLine("Bang!");
+        }
+        public void Listen()
+        {
+            //soittaa äänen uudestaan
+        }
+    }
 }
-
-
-
-
