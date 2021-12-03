@@ -1,6 +1,6 @@
 /* Title: Metsästäjä
  * Authors: Sari Tolonen ja Marja Tuhkanen
- * Marjan muutokset
+ * Marjan muutokset https://github.com/kamkmaea/metsastaja
 */
 
 using System;
@@ -35,6 +35,9 @@ namespace Metsastaja_harkka
     }
     class Deer : Animal//, IAudio
     {
+        private string name;
+        private double luck;
+        private double speed;
         public Deer(string name)
         {
             this.name = name;
@@ -56,6 +59,9 @@ namespace Metsastaja_harkka
     }
     class Rabbit : Animal
     {
+        private string name;
+        private double luck;
+        private double speed;
         public Rabbit(string name, int x, int y)
         {
             this.name = name;
@@ -77,6 +83,9 @@ namespace Metsastaja_harkka
     }
     class Grandma
     {
+        private string name;
+        private double luck;
+        private double speed;
         public void Cry()
         {
             Console.WriteLine("Auts!");
@@ -160,7 +169,33 @@ namespace Metsastaja_harkka
             for (int i = 1; i < (menu.Length); i++)
             {
                 Console.Write($"\t{i}. {menu[i]}\n");
-            } 
+            }
+            Console.WriteLine("Valintasi: ");
+            string input = Console.ReadLine();
+
+            switch(input)
+            {
+                case "1":
+                    Console.WriteLine();
+                    break;
+                case "2":
+                    Console.WriteLine();
+                    break;
+                case "3":
+                    Console.WriteLine();
+                    break;
+                case "4":
+                    Console.WriteLine();
+                    break;
+                case "5":
+                    Console.WriteLine();
+                    break;
+                default:
+                    Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
+                    break;
+            }
+
+            }
         }
         static void Player()
         {
