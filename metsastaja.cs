@@ -36,8 +36,8 @@ namespace Metsastaja_harkka
     class Deer : Animal//, IAudio
     {
         //private string name;
-        private double luck;
-        private double speed;
+        // private double luck;
+        // private double speed;
         public Deer(string name)
         {
             this.name = name;
@@ -60,8 +60,8 @@ namespace Metsastaja_harkka
     class Rabbit : Animal
     {
         //private string name;
-        private double luck;
-        private double speed;
+        // private double luck;
+        // private double speed;
         public Rabbit(string name, int x, int y)
         {
             this.name = name;
@@ -84,8 +84,8 @@ namespace Metsastaja_harkka
     class Grandma
     {
         //private string name;
-        private double luck;
-        private double speed;
+        // private double luck;
+        // private double speed;
         public void Cry()
         {
             Console.WriteLine("Auts!");
@@ -106,23 +106,39 @@ namespace Metsastaja_harkka
         //Yksinkertaistettu main
         
         {
-            Console.Write("\n\nTervetuloa pelaamaan metsästäjä peliä!");
+            Console.WriteLine("\nTervetuloa pelaamaan metsästäjä peliä!\n");
             Hunter metsastaja = new Hunter();
             string player = metsastaja.name;
-            Menu(player);
-            do
+            if (Menu(player))
             {
-                GameLoop();
+                do
+                {
+                    GameLoop();
+                }
+                while (Again());
             }
-            while (Again());
             
-            Console.WriteLine("Kiitos kun pelasit Metsästäjä peliä! \nOhjelma loppuu...");
+            Console.WriteLine("Kiitos kun pelasit Metsästäjä peliä!");
+            Console.WriteLine("Sari Tolonen ja Marja Tuhkanen @TTK21SP2");
         }
         
- static void Menu(string player)
+static void MakeLine(int length)
+{
+    for (int i = 0; i < length; i++)
+    {
+        Console.Write('-');
+    }
+
+}
+
+    static bool Menu(string player)
         // menu
         {
-            Console.WriteLine("\nPÄÄVALIKKO \nTTK21SP2: Sari Tolonen ja Marja Tuhkanen");
+            MakeLine(7);
+            Console.Write("=( PÄÄVALIKKO )=");
+            MakeLine(7);
+            Console.WriteLine("\n");
+
             string[] menu = new string []{"Pelihahmo",
                                         "Saaliseläin",
                                         "Matkan pituus",
@@ -132,7 +148,7 @@ namespace Metsastaja_harkka
             {
                 Console.Write($"\t{i}. {menu[i-1]}\n");
             }
-            Console.Write("Valintasi: ");
+            Console.Write("\n    Valintasi: ");
             string input = Console.ReadLine();
 
             switch(input)
@@ -140,25 +156,24 @@ namespace Metsastaja_harkka
                 case "1":
                     // se
                     Console.WriteLine($"pelaaja {player} valmiina!");
-                    break;
+                    return true;
                 case "2":
-                    Console.WriteLine("pray selected");
+                    Console.WriteLine("prey selected");
                     //Prey();
-                    break;
+                    return true;
                 case "3":
                     Console.WriteLine("distance selected");
                     //Distance();
-                    break;
+                    return true;
                 case "4":
                     Console.WriteLine("play selected");
-                    GameLoop();
-                    break;
+                    return true;
                 case "5":
                     Console.WriteLine("exit selected");
-                    return;
+                    return false;
                 default:
                     Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
-                    break;
+                    return false;
             }
         }
 
