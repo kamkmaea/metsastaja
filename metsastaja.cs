@@ -1,5 +1,6 @@
 /* Title: Metsästäjä
  * Authors: Sari Tolonen ja Marja Tuhkanen
+ * Marjan muutokset
 */
 
 using System;
@@ -185,13 +186,18 @@ namespace Metsastaja_harkka
     }
     public class Hunter
     {
-        public string name;
-        public string weapon;
-        public double accuracy;
+        private string name;
+        private string weapon;
+        private double accuracy;
+        private double speed;
 
         public void Shoot()
         {
             Console.WriteLine("Bang!");
+        }
+        public void Listen()
+        {
+            //soittaa äänen uudestaan
         }
     }
 }
