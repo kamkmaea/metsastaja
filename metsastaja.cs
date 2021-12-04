@@ -107,10 +107,10 @@ namespace metsastaja_harkka
 
     public class Hunter
     {
-        private string name;
-        private string weapon;
-        private string prey;
-        private int weaponSrength;
+        private string name = "Albert";
+        private string weapon = "haulikko";
+        private string prey = "peura";
+        private int weaponSrength = 50;
         private double accuracy = 50;
         private double speed = 50;
         
@@ -180,7 +180,7 @@ namespace metsastaja_harkka
         }
         public string GetPrey()
         {
-            Console.WriteLine($"Saalistat {prey}");
+            Console.WriteLine($"Saaliseläin {prey}");
             return prey;
         }
         
@@ -237,8 +237,6 @@ namespace metsastaja_harkka
                         case "1":
                             Console.WriteLine("Pelihahmo valittu");
                             metsastaja.SetName();
-                            metsastaja.SetWeapon();
-                            //Player();
                             break;
                         case "2":
                             Console.WriteLine("Saalis valittu");
@@ -246,7 +244,8 @@ namespace metsastaja_harkka
                             metsastaja.GetPrey();
                             break;
                         case "3":
-                            AskRounds();
+                            Console.WriteLine("Ase valittu");
+                            metsastaja.SetWeapon();
                             break;
                         case "4":
                             Console.WriteLine("Aloitetaan peliä");
@@ -278,33 +277,30 @@ namespace metsastaja_harkka
 
                                     //To-Do: peura pitää oman äänensä...?
                                     Console.WriteLine("(L)änsi, (P)ohjoinen, (I)tä tai (A)las");
-                                    string userInput = Console.ReadLine().ToLower();
+                                    string userInput = Console.ReadLine().Trim().ToLower();
                                     //vaihda switch case
-                                    if (userInput.Trim().StartsWith("a"))
+                                    switch(userInput)
                                     {
-                                        Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
+                                        case "a":
+                                            Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
+                                            break;
+                                        case "p":
+                                            Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
+                                            break;
+                                        case "i":
+                                            Console.WriteLine("Osuit ankkaan!");
+                                            Duck duck = new Duck("Aku");
+                                            duck.DeathNoise();
+                                            break;
+                                        case "l":
+                                            Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
+                                            Grandma mummo = new Grandma();
+                                            mummo.Cry();
+                                            break;
+                                        default:
+                                            Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
+                                            break;
                                     }
-                                    else if (userInput.Trim().StartsWith("p"))
-                                    {
-                                        Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
-                                    }
-                                    else if (userInput.Trim().StartsWith("i"))
-                                    {
-                                        Console.WriteLine("Osuit ankkaan!");
-                                        Duck duck = new Duck("Aku");
-                                        duck.DeathNoise();
-                                    }
-                                    else if (userInput.Trim().StartsWith("l"))
-                                    {
-                                        Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
-                                        Grandma grandma = new Grandma();
-                                        grandma.Cry();
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
-                                    }
-
                                 }
                             }
                             while (Again());
@@ -325,7 +321,6 @@ namespace metsastaja_harkka
         }
         static int AskRounds()
         {
-            Console.WriteLine("Matkan pituus valittu");
             Console.WriteLine("Kuinka monta kilometriä haluat kulkea? Maximi on 10km.");
             int.TryParse(Console.ReadLine(), out int rounds);
             if (rounds < 11)
@@ -348,7 +343,7 @@ namespace metsastaja_harkka
 
             string[] menu = new string []{"Pelihahmo",
                                         "Saaliseläin",
-                                        "Matkan pituus",
+                                        "Ase",
                                         "Aloita peli",
                                         "Lopeta peli"};
             for (int i = 1; i <= (menu.Length); i++)
@@ -364,7 +359,6 @@ namespace metsastaja_harkka
             }
         }
         static bool Again()
-        //Tässä kysymys haluaako pelata uudestaan
         {
             Console.WriteLine("Haluatko pelata uudestaan? (K)yllä vai (E)i?");
             string userInput = Console.ReadLine().Trim().ToLower();
@@ -373,8 +367,13 @@ namespace metsastaja_harkka
             {
                 return true;
             }
+            else if (userInput.StartsWith("e"))
+            {
+                return false;
+            }
             else
             {
+                Console.WriteLine("Tuntematon syöte, lopetetaan...");
                 return false;
             }
         }
