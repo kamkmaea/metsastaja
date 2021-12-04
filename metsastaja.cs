@@ -5,7 +5,7 @@
 
 using System;
 
-namespace metsastaja
+namespace metsastaja_harkka
 {
     enum Direction
     {
@@ -15,8 +15,9 @@ namespace metsastaja
     }
     interface SoundPoint
     {
-            public void SoundPlayer()
-        { //using Console.Beep() play sound at point
+        public void SoundPlayer()
+        {
+             //using Console.Beep() play sound at point
         }
     }
 
@@ -25,6 +26,7 @@ namespace metsastaja
         protected int x = 0, y = 0;
         public virtual void SetLocation(int newX, int newY)
         {
+            
         }
     }
     class Deer : Animal
@@ -40,10 +42,6 @@ namespace metsastaja
             SetLocation(x, y);
         }
         public string name { get; set; } = "Default";
-
-        public override void SetLocation(int newX, int newY)
-        {
-        }
         public void GetLocation()
         {
             Array values = Enum.GetValues(typeof(Direction)); 
@@ -58,10 +56,13 @@ namespace metsastaja
     {
         public void DeathNoise()
         {
+            Console.Beep();
             Console.WriteLine("Kääk!");
         }
         public Duck(string name)
-        {        }
+        {
+
+        }
         public Duck(string name, int x, int y)
         {
             this.name = name;
@@ -69,13 +70,6 @@ namespace metsastaja
         }
         public string name { get; set; } = "Default";
 
-        public override void SetLocation(int newX, int newY)
-        {
-        }
-        public void GetLocation()
-        {
-            
-        }
     }
     class Grandma
     {
@@ -89,7 +83,7 @@ namespace metsastaja
         public void GetLocation(int newX, int newY)
         {
         }
-        // TO-DO: grandma,dear,rabbit, sijainti - riippuen minkä sijainnin metsästäjä valitsee, siihen osuu
+        
         // TO-DO: if -lauseiden avulla kommentit siihen mihin osuttiin Program luokkaan
         // eläimillä voi olla erilaisia ominaisuuksia 
     }
@@ -115,6 +109,7 @@ namespace metsastaja
     {
         private string name;
         private string weapon;
+        private string prey;
         private int weaponSrength;
         private double accuracy = 50;
         private double speed = 50;
@@ -162,6 +157,32 @@ namespace metsastaja
             Console.WriteLine($"Sinulla on {weapon}");
             return weapon;
         }
+        public void SetPrey()
+        {
+            Console.Write($"Haluatko metsästää (P)euroja vai (A)nkkoja?: ");
+            string input = Console.ReadLine().Trim().ToLower();
+
+            switch(input)
+            {
+                case "p":
+                    Console.WriteLine($"Saaliiksesi valitsit peuran.");
+                    prey = "Peura";
+                    break;
+                case "a":
+                    Console.WriteLine("Saaliiksesi valitsit ankan.");                    
+                    prey = "Ankka";
+                    break;
+                default:
+                    Console.WriteLine("Valintaa ei tunnistettu. Peura valittu.");
+                    prey = "Peura";
+                    break;
+            }
+        }
+        public string GetPrey()
+        {
+            Console.WriteLine($"Saalistat {prey}");
+            return prey;
+        }
         
         public double GetAccuracy()
         {
@@ -195,8 +216,10 @@ namespace metsastaja
     }
 
 
-    public class Program
+    public class Program 
     {
+        static Random rnd = new Random();
+        
         public static void Main(string[] args)
         {
             Console.WriteLine("\nTervetuloa pelaamaan metsästäjä peliä!\n");
@@ -219,38 +242,70 @@ namespace metsastaja
                             break;
                         case "2":
                             Console.WriteLine("Saalis valittu");
-                            //Prey();
+                            metsastaja.SetPrey();
+                            metsastaja.GetPrey();
                             break;
-                        /*case "3":
-                            Console.WriteLine("Matkan pituus valittu");
-                            Console.WriteLine("Kuinka monta kilometriä haluat kulkea? Maximi on 10km.");
-                            int.TryParse(Console.ReadLine(), out int rounds);
-                            if (rounds < 11)
-                            {
-                                Console.WriteLine($"Valitsit {rounds}kilometriä.");
-                            }
-                            else
-                            {
-                                Console.WriteLine("Liian monta kilometriä tai tuntematon syöte, matkan pituudeksi asetetaan 1km.");
-                                rounds = 1;
-                            }*/
+                        case "3":
+                            AskRounds();
+                            break;
                         case "4":
                             Console.WriteLine("Aloitetaan peliä");
                             metsastaja.GetName();
                             metsastaja.GetWeapon();
+                            metsastaja.GetPrey();
                             metsastaja.GetStrength();
                             metsastaja.GetAccuracy();
                             metsastaja.GetSpeed();
-                            metsastaja.Shoot();
                             do
                             {
-                            /*tähänkö
                                 int rounds = AskRounds();
                 
                                 for (int i = 0 ; i < rounds ; i++)
-                                {*/
-                                GameLoop();
-                            /*    }*/
+                                {
+                                    Deer deer0 = new Deer("Petteri");
+                                    deer0.GetLocation();
+
+                                    
+
+                                    //TO-DO siajinnit
+                                    Console.WriteLine($"Olet lähtenyt metsälle. Kuljet pitkin pientä polkua. ");
+                                    Console.WriteLine($"Pohjoisessa sijaitsee, jonka suunnalta kuuluu. ");
+                                    Console.WriteLine($"Lännessa näet niityn, josta on kuultavissa.");
+                                    Console.WriteLine($"Idässä näet tuoretta kuusimetsää, josta välillä kuuluu kuusitiasen sirputus. ");
+                                    Console.WriteLine($"Kuulet äänen.");
+                                    Console.WriteLine($"Se on. Et osaa sanoa miltä suunnalta ääni tulee. Mihin suuntaan ammut?");
+
+
+                                    //To-Do: peura pitää oman äänensä...?
+                                    Console.WriteLine("(L)änsi, (P)ohjoinen, (I)tä tai (A)las");
+                                    string userInput = Console.ReadLine().ToLower();
+                                    //vaihda switch case
+                                    if (userInput.Trim().StartsWith("a"))
+                                    {
+                                        Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
+                                    }
+                                    else if (userInput.Trim().StartsWith("p"))
+                                    {
+                                        Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
+                                    }
+                                    else if (userInput.Trim().StartsWith("i"))
+                                    {
+                                        Console.WriteLine("Osuit ankkaan!");
+                                        Duck duck = new Duck("Aku");
+                                        duck.DeathNoise();
+                                    }
+                                    else if (userInput.Trim().StartsWith("l"))
+                                    {
+                                        Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
+                                        Grandma grandma = new Grandma();
+                                        grandma.Cry();
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
+                                    }
+
+                                }
                             }
                             while (Again());
 
@@ -267,6 +322,22 @@ namespace metsastaja
                             break;    
                     }
             }
+        }
+        static int AskRounds()
+        {
+            Console.WriteLine("Matkan pituus valittu");
+            Console.WriteLine("Kuinka monta kilometriä haluat kulkea? Maximi on 10km.");
+            int.TryParse(Console.ReadLine(), out int rounds);
+            if (rounds < 11)
+            {
+                Console.WriteLine($"Valitsit {rounds}kilometriä.");
+            }
+            else
+            {
+                Console.WriteLine("Liian monta kilometriä tai tuntematon syöte, matkan pituudeksi asetetaan 1km.");
+                rounds = 1;
+            }
+            return rounds;
         }
         static void DrawMenu()
         {
@@ -291,53 +362,6 @@ namespace metsastaja
             {
                 Console.Write('-');
             }
-        }
-        static void GameLoop()
-        //Pelin päälooppi missä itse peli tapahtuu
-        {
-            /*SoundPoint audio0 = new SoundPoint();//metsä
-            SoundPoint audio1 = new SoundPoint();//niitty
-            SoundPoint audio2 = new SoundPoint(); //vuori*/
-
-            Random rand = new Random();
-            Deer deer0 = new Deer("Petteri");
-
-            deer0.GetLocation();
-            //TO-DO siajinnit
-            Console.WriteLine("Olet lähtenyt peurametsälle. Kuljet pitkin pientä polkua. " +
-                            "\nPohjoisessa sijaitsee vuori, jonka suunnalta kuuluu vuoripuron solina. " +
-                            "\nLännessä näet niityn, josta on kuultavissa leppoisa tuulevire, joka heiluttaa hellästi kukkasia. " +
-                            "\nIdässä näet tuoretta kuusimetsää, josta välillä kuuluu kuusitiasen sirputus. " +
-                            "\nKuulet äänen. Et osaa sanoa miltä suunnalta ääni tulee. Mihin suuntaan ammut?");
-            //To-Do: peura pitää oman äänensä...?
-            Console.WriteLine("(L)änsi, (P)ohjoinen, (I)tä tai (A)las");
-            string userInput = Console.ReadLine().ToLower();
-            //vaihda switch case
-            if (userInput.Trim().StartsWith("a"))
-            {
-                Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
-            }
-            else if (userInput.Trim().StartsWith("p"))
-            {
-                Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
-            }
-            else if (userInput.Trim().StartsWith("i"))
-            {
-                Console.WriteLine("Osuit ankkaan!");
-                Duck duck = new Duck("Aku");
-                duck.DeathNoise();
-             }
-            else if (userInput.Trim().StartsWith("l"))
-            {
-                Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
-                Grandma grandma = new Grandma();
-                grandma.Cry();
-            }
-            else
-            {
-                Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
-            }
-  
         }
         static bool Again()
         //Tässä kysymys haluaako pelata uudestaan
