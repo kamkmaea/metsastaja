@@ -5,9 +5,9 @@
 
 using System;
 
-namespace Metsastaja_harkka
+namespace metsastaja
 {
-    enum Direction
+        enum Direction
     {
         metsä = 0,
         niitty = 1,
@@ -100,41 +100,158 @@ namespace Metsastaja_harkka
             // TO-DO: if -lauseiden avulla kommentit siihen mihin osuttiin Program luokkaan
             // eläimillä voi olla erilaisia ominaisuuksia 
     }
-    class Program
+
+
+
+
+
+
+
+
+
+    public class Hunter
     {
-        static void Main(string[] args)
-        //Yksinkertaistettu main
-        {
+        private string name;
+        private string weapon;
+        private int weaponSrength;
+        private double accuracy = 50;
+        private double speed = 50;
         
-            Console.WriteLine("\nTervetuloa pelaamaan metsästäjä peliä!\n");
-            DrawMenu();
-            Hunter metsastaja = new Hunter();
-            string player = metsastaja.name;
-            //metsastaja.NewHunter();
-            //metsastaja.Weapon();
-            //Console.WriteLine($"Metsästäjä {metsastaja.name} valmis {metsastaja.weapon}metsälle!\n");
-
-            if (Menu(player))
-            {
-                do
-                {
-                    GameLoop();
-                }
-                while (Again());
-            }
-            
-            Console.WriteLine("Kiitos kun pelasit Metsästäjä peliä!");
-            Console.WriteLine("Sari Tolonen ja Marja Tuhkanen @TTK21SP2");
-        }
-        static void MakeLine(int length)
+        public void SetName()
         {
-            for (int i = 0; i < length; i++)
+            Console.WriteLine("Mikä on nimesi?");
+            name = Console.ReadLine().Trim();
+        }
+        
+        public string GetName()
+        {
+            Console.WriteLine($"Pelihahmo {name}");
+            return name;
+
+        }
+        
+        public void SetWeapon()
+        {
+            Console.Write($"Hei {name}! Valitsetko metsästysretkelle (H)aulikon vai (J)ousipyssyn? : ");
+            string input = Console.ReadLine().Trim().ToLower();
+
+            switch(input)
             {
-                Console.Write('-');
+                case "h":
+                    Console.WriteLine($"Haulikko valittu.");
+                    weapon = "haulikko";
+                    weaponSrength = 50;
+                    break;
+                case "j":
+                    Console.WriteLine("Jousipyssy valittu.");                    
+                    weapon = "jousipyssy";
+                    weaponSrength = 25;
+                    break;
+                default:
+                    Console.WriteLine("Valintaa ei tunnistettu. Nyrkki valittu.");
+                    weapon = "nyrkki";
+                    weaponSrength = 10;
+                    break;
             }
         }
 
-        static string DrawMenu()
+        public string GetWeapon()
+        {
+            Console.WriteLine($"Sinulla on {weapon}");
+            return weapon;
+        }
+        
+        public double GetAccuracy()
+        {
+            Console.WriteLine($"Tarkkuutesi on {accuracy}/100");
+            return accuracy;
+        }
+        
+        public double GetSpeed()
+        {
+            Console.WriteLine($"Nopeutesi on {speed}/100");
+            return speed;
+        }
+
+        public int GetStrength()
+        {
+            Console.WriteLine($"Aseen voima on {weaponSrength}/100");
+            return weaponSrength;
+        }
+
+
+        public void Shoot()
+        {
+            Console.WriteLine("Bang!");
+        }
+
+
+        public void Listen()
+        {
+            //soittaa äänen uudestaan
+        }
+    }
+
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("\nTervetuloa pelaamaan metsästäjä peliä!\n");
+            Hunter metsastaja = new Hunter();
+
+            bool do_loop = true;
+            while (do_loop)
+            {
+                    DrawMenu(); 
+                    Console.Write("\n    Valintasi: ");
+                    string input = Console.ReadLine().Trim();
+                    
+                    switch(input)
+                    {
+                        case "1":
+                            Console.WriteLine("Pelihahmo valittu");
+                            metsastaja.SetName();
+                            metsastaja.SetWeapon();
+                            //Player();
+                            break;
+                        case "2":
+                            Console.WriteLine("Saalis valittu");
+                            //Prey();
+                            break;
+                        case "3":
+                            Console.WriteLine("Matkan pituus valittu");
+                            //Distance();
+                            break;
+                        case "4":
+                            Console.WriteLine("Aloitetaan peliä");
+                            metsastaja.GetName();
+                            metsastaja.GetWeapon();
+                            metsastaja.GetStrength();
+                            metsastaja.GetAccuracy();
+                            metsastaja.GetSpeed();
+                            metsastaja.Shoot();
+                            do
+                            {
+                                GameLoop();
+                            }
+                            while (Again());
+
+                            break;
+                        case "5":
+                            Console.WriteLine("Lopetus valittu");
+                            Console.WriteLine("Kiitos kun pelasit Metsästäjä peliä!");
+                            Console.WriteLine("Sari Tolonen ja Marja Tuhkanen @TTK21SP2");
+                            
+                            do_loop = false;
+                            break;
+                        default:
+                            Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
+                            break;    
+                    }
+            }
+        }
+        static void DrawMenu()
         {
             MakeLine(7);
             Console.Write("=( PÄÄVALIKKO )=");
@@ -150,47 +267,13 @@ namespace Metsastaja_harkka
             {
                 Console.Write($"\t{i}. {menu[i-1]}\n");
             }
-            Console.Write("\n    Valintasi: ");
-            string input = Console.ReadLine();
-            return input;
         }
-
-        static bool Menu(string player)
-        // menu        
+        static void MakeLine(int length)
         {
-            string input = DrawMenu();
-                
-            switch(input)
+            for (int i = 0; i < length; i++)
             {
-                case "1":
-                    Player();
-                    return false;
-                case "2":
-                    Console.WriteLine("prey selected");
-                    //Prey();
-                    return true;
-                case "3":
-                    Console.WriteLine("distance selected");
-                    //Distance();
-                    return true;
-                case "4":
-                    Console.WriteLine("play selected");
-                    return true;
-                case "5":
-                    Console.WriteLine("exit selected");
-                    return false;
-                    default:
-                    Console.WriteLine("Valintaa ei tunnistettu. Valitse numero 1-5.");
-                    return false;
+                Console.Write('-');
             }
-        }
-        static void Player()
-        {
-            //Hunter metsastaja = new Hunter();
-            //string player = metsastaja.name;
-            NewHunter();
-            Weapon();
-            Console.WriteLine($"Metsästäjä {metsastaja.name} valmis {metsastaja.weapon}metsälle!\n");
         }
         static void GameLoop()
         //Pelin päälooppi missä itse peli tapahtuu
@@ -245,55 +328,6 @@ namespace Metsastaja_harkka
                 return false;
             }
         }
-    }
-    public class Hunter
-    {
-        public string name;
-        //public double weapon;
-        public string weapon;
-        public int weaponSrength;
-        public double accuracy = 50;
-        public double speed = 50;
-            
 
-        public string NewHunter()
-        {
-            Console.WriteLine("Mikä on nimesi?");
-            name = Console.ReadLine().Trim();
-            return name;
-        }
-        public void Weapon()
-        {
-            Console.Write($"Hei {name}! Valitsetko metsästysretkelle (H)aulikon vai (J)ousipyssyn?");
-            string input = Console.ReadLine().Trim().ToLower();
-
-            switch(input)
-            {
-                case "h":
-                    Console.WriteLine($"Haulikko valittu.");
-                    weapon = "haulikko";                    
-                    weaponSrength = 50;
-                    break;
-                case "j":
-                    Console.WriteLine("Jousipyssy valittu.");                    
-                    weapon = "jousipyssy";                    
-                    weaponSrength = 25;
-                    break;
-                default:
-                    Console.WriteLine("Valintaa ei tunnistettu. Nyrkki valittu.");
-                    weapon = "nyrkki";
-                    weaponSrength = 10;
-                    break;
-            
-            }
-        }
-        public void Ammu()
-        {
-            Console.WriteLine("Bang!");
-        }
-        public void Listen()
-        {
-            //soittaa äänen uudestaan
-        }
     }
 }
