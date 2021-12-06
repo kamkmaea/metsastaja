@@ -1,9 +1,9 @@
 /* Title: Metsästäjä
  * Authors: Sari Tolonen ja Marja Tuhkanen
- * Marjan muutokset https://github.com/kamkmaea/metsastaja
 */
 
 using System;
+using System.Media;
 
 namespace metsastaja_harkka
 {
@@ -14,7 +14,7 @@ namespace metsastaja_harkka
         vuori = 3
     }
 
-    interface SoundPoint
+    interface ISoundPoint
     {
         public void SoundPlayer()
         {
@@ -161,6 +161,31 @@ namespace metsastaja_harkka
             return RandomLocation;
             //tarkista soundi
         }
+        public void SoundPoint()// tämä ehkä antaa äänen tietylle enumille, jos RandomLocation saa yhdistettyä siihen
+        {
+            if (RandomLocation == 1 && OperatingSystem.IsWindows())
+            {
+                SoundPlayer Noises = new SoundPlayer("kuusitiainen(metsä).wav");
+                Noises.Load();
+                Noises.Play();
+            }
+            else if (RandomLocation == 2 && OperatingSystem.IsWindows())
+            {
+                SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
+                Noises.Load();
+                Noises.Play();
+            }
+            else if (RandomLocation == 3 && OperatingSystem.IsWindows())
+            {
+                SoundPlayer Noises = new SoundPlayer("puro(vuori).wav");
+                Noises.Load();
+                Noises.Play();
+            }
+            else
+            {
+                return;
+            }
+        }
     }
     class Grandma: Human
     {
@@ -169,6 +194,12 @@ namespace metsastaja_harkka
     //private int luck;
     public void Hurt()
     {
+        if (OperatingSystem.IsWindows())
+        {
+            SoundPlayer Noises = new SoundPlayer("mummo.wav");
+            Noises.Load();
+            Noises.Play();
+        }
         Console.WriteLine("Auts!");
     }
     public int Shoot()
@@ -192,6 +223,12 @@ namespace metsastaja_harkka
     //private int luck;
     public void Hurt()
     {
+        if (OperatingSystem.IsWindows())
+        {
+            SoundPlayer Noises = new SoundPlayer("hunter.wav");
+            Noises.Load();
+            Noises.Play();
+        }
         Console.WriteLine("Urgh!");
     }
     
@@ -204,7 +241,12 @@ namespace metsastaja_harkka
     {
         public void Hurt()
         {
-            Console.Beep();
+            if (OperatingSystem.IsWindows())
+            {
+                SoundPlayer Noises = new SoundPlayer("peura.wav");
+                Noises.Load();
+                Noises.Play();
+            }
             Console.WriteLine("Möö!");
         }
         public int Kick()
@@ -217,7 +259,12 @@ namespace metsastaja_harkka
     {
         public void Hurt()
         {
-            Console.Beep();
+            if (OperatingSystem.IsWindows())
+            {
+                SoundPlayer Noises = new SoundPlayer("ankka.wav");
+                Noises.Load();
+                Noises.Play();
+            }
             Console.WriteLine("Kääk!");
         }
         public int Heristys()
@@ -230,7 +277,12 @@ namespace metsastaja_harkka
     {
         public void Hurt()
         {
-            Console.Beep();
+            if (OperatingSystem.IsWindows())
+            {
+                SoundPlayer Noises = new SoundPlayer("poro.wav");
+                Noises.Load();
+                Noises.Play();
+            }
             Console.WriteLine("Argh!");
         }
         public int Fly()
@@ -380,18 +432,35 @@ namespace metsastaja_harkka
 
 
                     Console.WriteLine($"Olet lähtenyt {saalis} metsälle. Kuljet pitkin pientä polkua. ");
-                    Console.WriteLine($"Pohjoisessa sijaitsee vuori");
-                    Console.Beep();
-                    Console.WriteLine(", jonka suunnalta kuuluu vuoripuron solina. ");
-                    Console.WriteLine($"Lännessa näet niityn");
-                    Console.Beep();
-                    Console.WriteLine($", josta on kuultavissa leppoisa tuulevire, joka heiluttaa hellästi kukkasia.");
-
-                    Console.WriteLine($"Idässä näet tuoretta kuusimetsää");
-                    Console.Beep();
-                    Console.WriteLine($", josta välillä kuuluu kuusitiasen sirputus. ");
-
+                    Console.WriteLine($"Pohjoisessa sijaitsee vuori, jonka suunnalta kuuluu vuoripuron solina. ");
+                    if (OperatingSystem.IsWindows())
+                    {
+                        SoundPlayer Noises = new SoundPlayer("puro(vuori).wav");
+                        Noises.Load();
+                        Noises.Play();
+                    }
+                    Console.Write($"Jatka kulkua");
+                    Console.ReadLine();
+                    Console.WriteLine($"Lännessa näet niityn, josta on kuultavissa leppoisa tuulevire, joka heiluttaa hellästi kukkasia.");
+                    if (OperatingSystem.IsWindows())
+                    {
+                        SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
+                        Noises.Load();
+                        Noises.Play();
+                    }
+                    Console.Write($"Jatka kulkua");
+                    Console.ReadLine();
+                    Console.WriteLine($"Idässä näet tuoretta kuusimetsää, josta välillä kuuluu kuusitiasen sirputus. ");
+                    if (OperatingSystem.IsWindows())
+                    {
+                        SoundPlayer Noises = new SoundPlayer("kuusitiainen(metsä).wav");
+                        Noises.Load();
+                        Noises.Play();
+                    }
+                    Console.Write($"Jatka kulkua");
+                    Console.ReadLine();
                     Console.WriteLine($"Kuulet äänen.");
+                    Console.Write(deer0.GetRandomLocation());
                     Console.Beep();
                     Console.WriteLine($"Se on {saalis}. Et osaa sanoa miltä suunnalta ääni tulee. Mihin suuntaan ammut?");
 
@@ -400,131 +469,115 @@ namespace metsastaja_harkka
 
                     if(suunta<=3)
                     {
-                        DoBattle(saalis, preylocation, suunta, deer0, duck0, mummo0, poro0);
+                        if(preylocation == suunta)
+                        {
+
+                            switch(saalis)
+                            {
+                                case "peura":
+                                    deer0.Kick();
+                                    break;
+                                case "ankka":
+                                    duck0.Heristys();
+                                    break;
+                                case "mummo":
+                                    mummo0.Shoot();
+                                    break;
+                                case "poro":
+                                    poro0.Fly();
+                                    break;
+                                default:
+                                    Console.Beep();
+                                    break;
+                            }
+                            //return true;
+                        }
+                        else
+                        {
+                            Random random = new Random();
+                            string animal;
+
+                            if(saalis == "peura")
+                            {
+                                string[] osuttuelain = new string[]{"ankka", "mummo", "poro",};
+                                animal = osuttuelain[rnd.Next(osuttuelain.Length)];
+                            }
+                            else
+                            {
+                                string[] osuttuelain = new string[]{"peura", "mummo", "poro",};
+                                animal = osuttuelain[rnd.Next(osuttuelain.Length)];
+                            }
+
+                            Console.WriteLine($"Ammuit {animal}a!");
+
+                            //int tulos = metsastaja.GetAccuracy - {animal}.Luck
+                            int tulos = 70-50;
+
+                            if(tulos < 70)
+                            {
+                                Console.WriteLine($"{animal} vain haavottui!");
+
+                                switch(saalis)
+                                {
+                                    case "peura":
+                                        deer0.Kick();
+                                        break;
+                                    case "ankka":
+                                        duck0.Heristys();
+                                        break;
+                                    case "mummo":
+                                        mummo0.Shoot();
+                                        break;
+                                    case "poro":
+                                        poro0.Fly();
+                                        break;
+                                    default:
+                                        Console.Beep();
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Osuit {animal}an!");
+
+                                switch(animal)
+                                {
+                                    case "peura":
+                                        Console.Beep();
+                                        Console.WriteLine("Osuit peuraan! Harmi, ettet ole peurametsällä.");
+                                        break;
+                                    case "ankka":
+                                        Console.Beep();
+                                        Console.WriteLine("Osuit ankkaan! Harmi, ettet ole ankkametsällä.");
+                                        break;
+                                    case "mummo":
+                                        Console.Beep();
+                                        Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
+                                        mummo0.CallPolice();
+                                        break;
+                                    default:
+                                        Console.Beep();
+                                        Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
+                                        break;
+                                }
+                            }
+
+                            //return false;
+                        }
                     }
                     else if(suunta == 4)
                     {
                         Console.Beep();
                         Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
-                        return metsastaja.speed = -15;
                     }
                     else
                     {
                         Console.Beep();
                         Console.WriteLine("Ammuit taivaalle! Minnehän luoti osuu?");
-                        return poro0.accuracy -15;
                     }
                 }
             }
             while (Again());
-        }
-        public bool DoBattle(string saalis, string animal, int preylocation, int suunta, Deer deer0, Duck duck0, Grandma mummo0, Reindeer poro0)
-        {
-            if(preylocation == suunta)
-            {
-                BattlePrey(saalis, deer0, duck0, mummo0, poro0);
-                return true;
-            }
-            else
-            {
-                BattleOther(saalis);
-                return false;
-            }
-        }
-
-        public void BattlePrey(string saalis, Deer deer0, Duck duck0, Grandma mummo0, Reindeer poro0)
-        {
-            switch(saalis)
-            {
-                case "peura":
-                    deer0.Kick();
-                    break;
-                case "ankka":
-                    duck0.Heristys();
-                    break;
-                case "mummo":
-                    mummo0.Shoot();
-                    break;
-                case "poro":
-                    poro0.Fly();
-                    break;
-                default:
-                    Console.Beep();
-                    break;
-            }   
-        }
-        public void BattleOther(string saalis, Grandma mummo0, Deer deer0, Duck duck0, Reindeer poro0)
-        {
-            Random random = new Random();
-            string animal;
-
-            if(saalis == "peura")
-            {
-                string[] osuttuelain = new string[]{"ankka", "mummo", "poro",};
-                animal = osuttuelain[rnd.Next(osuttuelain.Length)];
-            }
-            else
-            {
-                string[] osuttuelain = new string[]{"peura", "mummo", "poro",};
-                animal = osuttuelain[rnd.Next(osuttuelain.Length)];
-            }
-
-            Console.WriteLine($"Ammuit {animal}a!");
-
-            //int tulos = metsastaja.GetAccuracy - {animal}.Luck
-            int tulos = 70-50;
-
-            if(tulos < 70)
-            {
-                Console.WriteLine($"{animal} vain haavottui!");
-                AnimalWin(saalis, deer0, duck0, mummo0, poro0);
-            }
-            else
-            {
-                Console.WriteLine("Osuit {animal}an!");
-
-                switch(animal)
-                {
-                    case "peura":
-                        Console.Beep();
-                        Console.WriteLine("Osuit peuraan! Harmi, ettet ole peurametsällä.");
-                        break;
-                    case "ankka":
-                        Console.Beep();
-                        Console.WriteLine("Osuit ankkaan! Harmi, ettet ole ankkametsällä.");
-                        break;
-                    case "mummo":
-                        Console.Beep();
-                        Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
-                        mummo0.CallPolice();
-                        break;
-                    default:
-                        Console.Beep();
-                        Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
-                        break;
-                }
-            }
-        }
-        public void AnimalWin(string saalis, Character, Human, Animal)
-        {
-                switch(saalis)
-            {
-                case "peura":
-                    deer0.Kick();
-                    break;
-                case "ankka":
-                    duck0.Heristys();
-                    break;
-                case "mummo":
-                    Human.Shoot();
-                    break;
-                case "poro":
-                    poro0.Fly();
-                    break;
-                default:
-                    Console.Beep();
-                break;
-            }   
         }
     }
 }
