@@ -432,7 +432,7 @@ namespace metsastaja_harkka
                     Console.WriteLine($"Pohjoisessa sijaitsee vuori, jonka suunnalta kuuluu vuoripuron solina. ");
                     if (OperatingSystem.IsWindows())
                     {
-                        SoundPlayer Noises = new SoundPlayer("puro(vuori).wav");
+                        SoundPlayer Noises = new SoundPlayer("puro.wav");
                         Noises.Load();
                         Noises.Play();
                     }
@@ -441,7 +441,7 @@ namespace metsastaja_harkka
                     Console.WriteLine($"Lännessa näet niityn, josta on kuultavissa leppoisa tuulevire, joka heiluttaa hellästi kukkasia.");
                     if (OperatingSystem.IsWindows())
                     {
-                        SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
+                        SoundPlayer Noises = new SoundPlayer("tuuli.wav");
                         Noises.Load();
                         Noises.Play();
                     }
@@ -450,7 +450,7 @@ namespace metsastaja_harkka
                     Console.WriteLine($"Idässä näet tuoretta kuusimetsää, josta välillä kuuluu kuusitiasen sirputus. ");
                     if (OperatingSystem.IsWindows())
                     {
-                        SoundPlayer Noises = new SoundPlayer("kuusitiainen(metsä).wav");
+                        SoundPlayer Noises = new SoundPlayer("kuusitiainen.wav");
                         Noises.Load();
                         Noises.Play();
                     }
@@ -459,19 +459,19 @@ namespace metsastaja_harkka
                     Console.WriteLine($"Kuulet äänen.");
                     if (preylocation == 1 && OperatingSystem.IsWindows())
                     {
-                        SoundPlayer Noises = new SoundPlayer("kuusitiainen(metsä).wav");
+                        SoundPlayer Noises = new SoundPlayer("kuusitiainen.wav");
                         Noises.Load();
                         Noises.Play();
                     }
                     else if (preylocation == 2 && OperatingSystem.IsWindows())
                     {
-                        SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
+                        SoundPlayer Noises = new SoundPlayer("tuuli.wav");
                         Noises.Load();
                         Noises.Play();
                     }
                     else if (preylocation == 3 && OperatingSystem.IsWindows())
                     {
-                        SoundPlayer Noises = new SoundPlayer("puro(vuori).wav");
+                        SoundPlayer Noises = new SoundPlayer("puro.wav");
                         Noises.Load();
                         Noises.Play();
                     }
@@ -664,7 +664,7 @@ namespace metsastaja_harkka
                     {
                         if (OperatingSystem.IsWindows())
                         {
-                            SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
+                            SoundPlayer Noises = new SoundPlayer("tuuli.wav");
                             Noises.Load();
                             Noises.Play();
                         }
