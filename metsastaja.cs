@@ -8,20 +8,6 @@ using System.Threading;
 
 namespace metsastaja_harkka
 {
-    enum Direction
-    {
-        metsä = 1,
-        niitty = 2,
-        vuori = 3
-    }
-
-    interface ISoundPoint
-    {
-        public void SoundPlayer()
-        {
-             //using Console.Beep() play sound at point
-        }
-    }
     abstract class Character
     {
         private string name;
@@ -59,6 +45,7 @@ namespace metsastaja_harkka
         //SPEED from character
         //LUCK from character
         //HURT from character?
+        protected const int shoot = 12;
         private string weapon;
         private string prey;
         private int weaponStrength;
@@ -146,7 +133,7 @@ namespace metsastaja_harkka
     }
     abstract class Animal: Character
     {
-        Random random = new Random();
+        Random r = new Random();
         //NAME from character
         //SPEED from character
         //LUCK from character
@@ -156,36 +143,10 @@ namespace metsastaja_harkka
 
         public int GetRandomLocation()
         {
-            Array values = Enum.GetValues(typeof(Direction));            
-            Direction randomDirection = (Direction)values.GetValue(random.Next(values.Length));
+            Random rnd = new Random();
+            int value = rnd.Next(3);
             return RandomLocation;
-            //tarkista soundi
         }
-        /*public void SoundPoint()// tämä ehkä antaa äänen tietylle enumille, jos RandomLocation saa yhdistettyä siihen
-        {
-            if (RandomLocation == 1 && OperatingSystem.IsWindows())
-            {
-                SoundPlayer Noises = new SoundPlayer("kuusitiainen(metsä).wav");
-                Noises.Load();
-                Noises.Play();
-            }
-            else if (RandomLocation == 2 && OperatingSystem.IsWindows())
-            {
-                SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
-                Noises.Load();
-                Noises.Play();
-            }
-            else if (RandomLocation == 3 && OperatingSystem.IsWindows())
-            {
-                SoundPlayer Noises = new SoundPlayer("puro(vuori).wav");
-                Noises.Load();
-                Noises.Play();
-            }
-            else
-            {
-                return;
-            }
-        }*/
     }
     class Grandma: Human
     {
@@ -202,17 +163,15 @@ namespace metsastaja_harkka
         Console.WriteLine("Auts!");
         }*/
     
-        public void Shoot()
+        public void Ampu()
         {
-            Console.WriteLine("Mummo ampui sinua!");
+            Console.WriteLine(Human.shoot + "Mummo ampui sinua!");
         }
         public void CallPolice()
         {
             Console.WriteLine("Ammuit mummoa, poliisit heittivät sinut putkaan.");
         }
-        //private string weapon = "nyrkki";
-        //private string prey = "ankka";
-        //private int weaponStrength = 10;
+        private int weaponStrength = 10;
         private int accuracy = 15;
     }
     class Hunter: Human
@@ -234,7 +193,7 @@ namespace metsastaja_harkka
         private string weapon = "haulikko";
         private string prey = "peura";
         private int weaponStrength = 50;
-        private int accuracy = 50;
+        private int accuracy = 35;
     }
     class Deer : Animal
     {
@@ -248,10 +207,9 @@ namespace metsastaja_harkka
             }
             Console.WriteLine("Möö!");
         }*/
-        public int Kick()
+        public void Kick()
         {
             Console.WriteLine("Peura potkaisee sinua. Jatkat matkaasi haavoittuneena");
-            return -10;
         }
     }
     class Duck : Animal
@@ -266,10 +224,9 @@ namespace metsastaja_harkka
             }
             Console.WriteLine("Kääk!");
         }*/
-        public int Heristys()
+        public void Heristys()
         {
             Console.WriteLine("Ankka heristää sinulle nyrkkiään ja katoaa näkyvistä");
-            return -5;
         }
     }
     class Reindeer : Animal
@@ -284,10 +241,9 @@ namespace metsastaja_harkka
             }
             Console.WriteLine("Argh!");
         }*/
-        public int Fly()
+        public void Fly()
         {
             Console.WriteLine("Poro väistää ammuksesi ja lentää pois.");
-            return -2;
         }
     }
     public class Program 
@@ -424,9 +380,13 @@ namespace metsastaja_harkka
                     {
                         preylocation = deer0.GetRandomLocation();
                     }
-                    else
+                    else if(saalis == "ankka")
                     {
                         preylocation = duck0.GetRandomLocation();
+                    }
+                    else
+                    {
+                        preylocation = poro0.GetRandomLocation();
                     }
 
 
@@ -459,8 +419,27 @@ namespace metsastaja_harkka
                     Console.Write($"Jatka kulkua");
                     Console.ReadLine();
                     Console.WriteLine($"Kuulet äänen.");
+                    /*if (preylocation == 1 && OperatingSystem.IsWindows())
+                    {
+                        SoundPlayer Noises = new SoundPlayer("kuusitiainen(metsä).wav");
+                        Noises.Load();
+                        Noises.Play();
+                    }
+                    else if (preylocation == 2 && OperatingSystem.IsWindows())
+                    {
+                        SoundPlayer Noises = new SoundPlayer("tuuli(niitty).wav");
+                        Noises.Load();
+                        Noises.Play();
+                    }
+                    else (preylocation == 3 && OperatingSystem.IsWindows())
+                    {
+                        SoundPlayer Noises = new SoundPlayer("puro(vuori).wav");
+                        Noises.Load();
+                        Noises.Play();
+                    }*/
+
                     //Console.Write(deer0.GetRandomLocation());
-                    Console.Beep();
+                    //Console.Beep();
                     Console.WriteLine($"Se on {saalis}. Et osaa sanoa miltä suunnalta ääni tulee. Mihin suuntaan ammut?");
 
                     Console.WriteLine("Länsi (1), Pohjoinen (2), Itä (3) tai Alas (4)");
@@ -470,30 +449,46 @@ namespace metsastaja_harkka
                     {
                         if(preylocation == suunta)
                         {
+                            //int tulos = metsastaja.GetAccuracy - {animal}.Luck
+                            int tulos = 70-50;
 
-                            switch(saalis)
+                            if(tulos < 70)
                             {
-                                case "peura":
-                                    deer0.Kick();
-                                    break;
-                                case "ankka":
-                                    duck0.Heristys();
-                                    break;
-                                case "mummo":
-                                    mummo0.Shoot();
-                                    break;
-                                case "poro":
-                                    poro0.Fly();
-                                    break;
-                                default:
-                                    Console.Beep();
-                                    break;
+                                Console.WriteLine($"{saalis} vain haavoittui!");
+
+                                switch(saalis)
+                                {
+                                    case "peura":
+                                        deer0.Kick();
+                                        break;
+                                    case "ankka":
+                                        duck0.Heristys();
+                                        break;
+                                    default:
+                                        poro0.Fly();
+                                        break;
+                                }
                             }
-                            //return true;
+                            else
+                            {
+                                Console.WriteLine($"Osuit {saalis}an!");
+
+                                switch(saalis)
+                                {
+                                    case "peura":
+                                        deer0.Kick();
+                                        break;
+                                    case "ankka":
+                                        duck0.Heristys();
+                                        break;
+                                    default:
+                                        poro0.Fly();
+                                        break;
+                                }
+                            }
                         }
                         else
                         {
-                            Random random = new Random();
                             string animal;
 
                             if(saalis == "peura")
@@ -530,7 +525,7 @@ namespace metsastaja_harkka
                                         duck0.Heristys();
                                         break;
                                     case "mummo":
-                                        mummo0.Shoot();
+                                        mummo0.Ampu();
                                         break;
                                     case "poro":
                                         poro0.Fly();
@@ -564,8 +559,7 @@ namespace metsastaja_harkka
                                         Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
                                         break;
                                 }
-                            }
-                            //return false;
+                            }  
                         }
                     }
                     else if(suunta == 4)
