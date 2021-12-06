@@ -11,9 +11,8 @@ namespace metsastaja_harkka
     abstract class Character
     {
         protected string name = "Esko";
-        protected int speed = 20;
-        protected int luck = 20;
-        protected int hurt = -10;
+        protected int speed;
+        protected int luck;
 
         public void SetName()
         {
@@ -25,20 +24,23 @@ namespace metsastaja_harkka
             Console.WriteLine($"Pelihahmo {name}");
             return name;
         }
+        public void SetSpeed(int speedvalue)
+        {
+            speed = speedvalue;
+        }
         public int GetSpeed()
         {
             Console.WriteLine($"Nopeutesi on {speed}/100");
             return speed;
         }
+        public void SetLuck(int luckvalue)
+        {            
+            luck = luckvalue;
+        }
         public int GetLuck()
         {
             Console.WriteLine($"Onnesi on {luck}/100");
             return luck;
-        }
-        public int GetHurt()
-        {
-            Console.WriteLine($"Sinuun sattui.");
-            return hurt;
         }
     }
     abstract class Human : Character
@@ -49,8 +51,8 @@ namespace metsastaja_harkka
         //HURT from character
         protected string weapon = "haulikko";
         protected string prey = "peura";
-        protected int weaponStrength = 50;
-        protected int accuracy = 25;
+        protected int weaponStrength = 60;
+        protected int accuracy = 35;
         protected const string shoot = "Bang";
 
         public void SetWeapon()
@@ -63,17 +65,20 @@ namespace metsastaja_harkka
                 case "h":
                     Console.WriteLine($"Haulikko valittu.");
                     weapon = "haulikko";
-                    weaponStrength = 50;
+                    weaponStrength = 60;
+                    accuracy = 35;
                     break;
                 case "j":
                     Console.WriteLine("Jousipyssy valittu.");                    
                     weapon = "jousipyssy";
                     weaponStrength = 25;
+                    accuracy = 55;
                     break;
                 default:
                     Console.WriteLine("Valintaa ei tunnistettu. Nyrkki valittu.");
                     weapon = "nyrkki";
                     weaponStrength = 10;
+                    accuracy = 50;
                     break;
             }
         }
@@ -114,7 +119,10 @@ namespace metsastaja_harkka
             Console.WriteLine($"Aseen voima on {weaponStrength}/100");
             return weaponStrength;
         }
-        
+        public void SetAccuracy(int accuracyvalue)
+        {            
+            accuracy = accuracyvalue;
+        }
         public int GetAccuracy()
         {
             Console.WriteLine($"Tarkkuutesi on {accuracy}/100");
@@ -293,7 +301,8 @@ namespace metsastaja_harkka
         {
             Console.WriteLine("\nTervetuloa pelaamaan metsästäjä peliä!\n");
             Hunter metsastaja = new Hunter();
-            Grandma mummo0 = new Grandma();
+            metsastaja.SetSpeed(40);
+            metsastaja.SetLuck(50);
 
             bool do_loop = true;
             while (do_loop)
@@ -327,7 +336,8 @@ namespace metsastaja_harkka
                             metsastaja.GetWeaponStrength();
                             metsastaja.GetAccuracy();
                             metsastaja.GetSpeed();
-                            GameLoop(metsastaja, mummo0);
+                            metsastaja.GetLuck();
+                            GameLoop(metsastaja);
                             break;
                         case "5":
                             Console.WriteLine("Lopetus valittu");
@@ -400,13 +410,23 @@ namespace metsastaja_harkka
                 return false;
             }
         }
-        static void GameLoop(Hunter metsastaja, Grandma mummo0)
+        static void GameLoop(Hunter metsastaja)
         {
             do
             {
                 Deer deer0 = new Deer();
+                deer0.SetSpeed(75);
+                deer0.SetLuck(40);
                 Duck duck0 = new Duck();
+                duck0.SetSpeed(25);
+                duck0.SetLuck(25);
                 Reindeer poro0 = new Reindeer();
+                poro0.SetSpeed(60);
+                poro0.SetLuck(75);
+                Grandma mummo0 = new Grandma();
+                mummo0.SetSpeed(20);
+                mummo0.SetLuck(60);
+                mummo0.SetAccuracy(15);
 
                 int preylocation;
                 int rounds = AskRounds();
@@ -491,8 +511,8 @@ namespace metsastaja_harkka
                     {
                         if(preylocation == suunta)
                         {
-                            //int tulos = metsastaja.GetAccuracy - {animal}.Luck
-                            int tulos = 70-50;
+                            int tulos = metsastaja.GetAccuracy - {animal}.Luck
+                            //int tulos = 70-50;
 
                             if(tulos < 70)
                             {
@@ -507,6 +527,7 @@ namespace metsastaja_harkka
                                         if(actions == 1)
                                         {
                                             deer0.Kick();
+                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -10);
                                         }
                                         else
                                         {
@@ -518,6 +539,7 @@ namespace metsastaja_harkka
                                         if(actions == 1)
                                         {
                                             duck0.Heristys();
+                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -5);
                                         }
                                         else
                                         {
@@ -527,6 +549,7 @@ namespace metsastaja_harkka
                                     default:
                                         poro0.ReindeerHurt();
                                         poro0.Fly();
+                                        metsastaja.SetLuck(metsastaja.GetLuck() -15);
                                         break;
                                 }
                             Console.ReadKey();
@@ -590,6 +613,7 @@ namespace metsastaja_harkka
                                         if(actions == 1)
                                         {
                                             deer0.Kick();
+                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -10);
                                         }
                                         else
                                         {
@@ -601,6 +625,7 @@ namespace metsastaja_harkka
                                         if(actions == 1)
                                         {
                                             duck0.Heristys();
+                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -5);
                                         }
                                         else
                                         {
@@ -610,6 +635,7 @@ namespace metsastaja_harkka
                                     case "poro":
                                         poro0.ReindeerHurt();
                                         poro0.Fly();
+                                        metsastaja.SetLuck(metsastaja.GetLuck() -15);
                                         break;
                                     default:
                                         mummo0.MummoHurt();
@@ -617,10 +643,13 @@ namespace metsastaja_harkka
                                         {
                                             mummo0.GetShoot();
                                             mummo0.Ampu();
+                                            metsastaja.SetLuck(metsastaja.GetLuck() -25);
+                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -25);
                                         }
                                         else
                                         {
                                             mummo0.CallPolice();
+                                            metsastaja.SetAccuracy(metsastaja.GetAccuracy() -15);
                                         }
                                         break;
                                 }
@@ -657,7 +686,11 @@ namespace metsastaja_harkka
                     else if(suunta == 4)
                     {
                         metsastaja.MetsastajaHurt();
+                        Console.WriteLine($"Sinuun sattui.");
                         Console.WriteLine("Ammuit itseäsi jalkaan! Onko nyt hyvä?");
+                        metsastaja.SetSpeed(metsastaja.GetSpeed() -35);
+                        metsastaja.SetAccuracy(metsastaja.GetAccuracy() -35);
+                        metsastaja.SetLuck(metsastaja.GetLuck() -35);
                         Console.ReadKey();
                     }
                     else
