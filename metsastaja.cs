@@ -333,10 +333,6 @@ namespace metsastaja_harkka
                             metsastaja.GetName();
                             metsastaja.GetWeapon();
                             metsastaja.GetPrey();
-                            metsastaja.GetWeaponStrength();
-                            metsastaja.GetAccuracy();
-                            metsastaja.GetSpeed();
-                            metsastaja.GetLuck();
                             GameLoop(metsastaja);
                             break;
                         case "5":
@@ -447,6 +443,11 @@ namespace metsastaja_harkka
                     {
                         preylocation = poro0.GetRandomLocation();
                     }
+                    metsastaja.GetWeaponStrength();
+                    metsastaja.GetAccuracy();
+                    metsastaja.GetSpeed();
+                    metsastaja.GetLuck();
+                    Console.ReadLine();
 
                     Console.WriteLine($"Olet lähtenyt {saalis} metsälle. Kuljet pitkin pientä polkua. ");
                     Console.WriteLine($"Pohjoisessa sijaitsee vuori, jonka suunnalta kuuluu vuoripuron solina. ");
@@ -511,10 +512,23 @@ namespace metsastaja_harkka
                     {
                         if(preylocation == suunta)
                         {
-                            int tulos = metsastaja.GetAccuracy - {animal}.Luck
-                            //int tulos = 70-50;
+                            int osuja = metsastaja.GetWeaponStrength() + metsastaja.GetAccuracy() + metsastaja.GetSpeed() + metsastaja.GetLuck();
+                            int osuttava;
+                            if(saalis == "peura")
+                            {
+                                osuttava = deer0.GetSpeed() + deer0.GetLuck();
+                            }
+                            else if(saalis == "ankka")
+                            {
+                                osuttava = duck0.GetSpeed() + duck0.GetLuck();
+                            }
+                            else
+                            {
+                                osuttava = poro0.GetSpeed() + poro0.GetLuck();
+                            }
+                            int tulos = osuja - osuttava;
 
-                            if(tulos < 70)
+                            if(tulos <= 95)
                             {
                                 Console.WriteLine($"{saalis} vain haavoittui!");
                                 int actions = rnd.Next(2);
@@ -532,6 +546,7 @@ namespace metsastaja_harkka
                                         else
                                         {
                                             deer0.Hide();
+                                            deer0.SetSpeed(deer0.GetSpeed() +10);
                                         }
                                         break;
                                     case "ankka":
@@ -539,17 +554,19 @@ namespace metsastaja_harkka
                                         if(actions == 1)
                                         {
                                             duck0.Heristys();
-                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -5);
+                                            metsastaja.SetAccuracy(metsastaja.GetAccuracy() -5);
                                         }
                                         else
                                         {
                                             duck0.Swim();
+                                            duck0.SetSpeed(duck0.GetSpeed() +5);
                                         }
                                         break;
                                     default:
                                         poro0.ReindeerHurt();
                                         poro0.Fly();
                                         metsastaja.SetLuck(metsastaja.GetLuck() -15);
+                                        poro0.SetLuck(poro0.GetLuck() +15);
                                         break;
                                 }
                             Console.ReadKey();
@@ -563,14 +580,17 @@ namespace metsastaja_harkka
                                     case "peura":
                                         deer0.DeerHurt();
                                         Console.WriteLine($"Osuit {saalis}an! Mahtavaa!");
+                                        metsastaja.SetSpeed(metsastaja.GetSpeed() +10);
                                         break;
                                     case "ankka":
                                         duck0.DuckHurt();
                                         Console.WriteLine($"Osuit {saalis}an! Mahtavaa!");
+                                        metsastaja.SetAccuracy(metsastaja.GetAccuracy() +5);
                                         break;
                                     default:
                                         poro0.ReindeerHurt();
                                         Console.WriteLine($"Osuit {saalis}an! Mahtavaa!");
+                                        metsastaja.SetLuck(metsastaja.GetLuck() +15);
                                         break;
                                 }
                             Console.ReadKey();
@@ -598,10 +618,27 @@ namespace metsastaja_harkka
 
                             Console.WriteLine($"Ammuit {animal}a!");
 
-                            //int tulos = metsastaja.GetAccuracy - {animal}.Luck
-                            int tulos = 70-50;
+                            int osuja = metsastaja.GetWeaponStrength() + metsastaja.GetAccuracy() + metsastaja.GetSpeed() + metsastaja.GetLuck();
+                            int osuttava;
+                            if(animal == "peura")
+                            {
+                                osuttava = deer0.GetSpeed() + deer0.GetLuck();
+                            }
+                            else if(animal == "ankka")
+                            {
+                                osuttava = duck0.GetSpeed() + duck0.GetLuck();
+                            }
+                            else if(animal == "poro")
+                            {
+                                osuttava = poro0.GetSpeed() + poro0.GetLuck();
+                            }
+                            else
+                            {
+                                osuttava = mummo0.GetSpeed() + mummo0.GetLuck();
+                            }
+                            int tulos = osuja - osuttava;
 
-                            if(tulos < 70)
+                            if(tulos <=95)
                             {
                                 Console.WriteLine($"{animal} vain haavoittui!");
                                 int actions = rnd.Next(2);
@@ -618,6 +655,7 @@ namespace metsastaja_harkka
                                         else
                                         {
                                             deer0.Hide();
+                                            deer0.SetSpeed(deer0.GetSpeed() +10);
                                         }
                                         break;
                                     case "ankka":
@@ -625,31 +663,41 @@ namespace metsastaja_harkka
                                         if(actions == 1)
                                         {
                                             duck0.Heristys();
-                                            metsastaja.SetSpeed(metsastaja.GetSpeed() -5);
+                                            metsastaja.SetAccuracy(metsastaja.GetAccuracy() -5);
                                         }
                                         else
                                         {
                                             duck0.Swim();
+                                            duck0.SetSpeed(duck0.GetSpeed() +10);
                                         }
                                         break;
                                     case "poro":
                                         poro0.ReindeerHurt();
                                         poro0.Fly();
                                         metsastaja.SetLuck(metsastaja.GetLuck() -15);
+                                        poro0.SetLuck(poro0.GetLuck() +15);
                                         break;
                                     default:
                                         mummo0.MummoHurt();
-                                        if(actions == 1)
+
+                                        int mies = metsastaja.GetWeaponStrength() + metsastaja.GetAccuracy() + metsastaja.GetSpeed() + metsastaja.GetLuck();
+                                        int nainen = mummo0.GetWeaponStrength() + mummo0.GetAccuracy() + mummo0.GetSpeed() + mummo0.GetLuck();
+                                        
+                                        if(mies < nainen)
                                         {
                                             mummo0.GetShoot();
                                             mummo0.Ampu();
                                             metsastaja.SetLuck(metsastaja.GetLuck() -25);
                                             metsastaja.SetSpeed(metsastaja.GetSpeed() -25);
+                                            metsastaja.SetAccuracy(metsastaja.GetAccuracy() -25);
                                         }
                                         else
                                         {
                                             mummo0.CallPolice();
-                                            metsastaja.SetAccuracy(metsastaja.GetAccuracy() -15);
+                                            metsastaja.SetLuck(metsastaja.GetLuck() -25);
+                                            mummo0.SetLuck(mummo0.GetLuck() +25);
+                                            mummo0.SetSpeed(mummo0.GetSpeed() +25);
+                                            mummo0.SetAccuracy(mummo0.GetAccuracy() +25);
                                         }
                                         break;
                                 }
@@ -664,19 +712,23 @@ namespace metsastaja_harkka
                                     case "peura":
                                         deer0.DeerHurt();
                                         Console.WriteLine("Osuit peuraan! Harmi, ettet ole peurametsällä.");
+                                        metsastaja.SetSpeed(metsastaja.GetSpeed() +5);
                                         break;
                                     case "ankka":
                                         duck0.DuckHurt();
                                         Console.WriteLine("Osuit ankkaan! Harmi, ettet ole ankkametsällä.");
+                                        metsastaja.SetAccuracy(metsastaja.GetAccuracy() +2);
                                         break;
                                     case "mummo":
                                         mummo0.MummoHurt();
                                         Console.WriteLine("Voi ei! Osuit naapurin dementoituneeseen mummoon!");
                                         mummo0.CallPolice();
+                                        metsastaja.SetLuck(metsastaja.GetLuck() -50);
                                         break;
                                     default:
                                         poro0.ReindeerHurt();
                                         Console.WriteLine("Osuit poroon! Millä Joulupukki nyt tulee vierailulle?");
+                                        metsastaja.SetLuck(0);
                                         break;
                                 }
                             Console.ReadKey();
